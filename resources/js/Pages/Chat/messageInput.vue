@@ -10,7 +10,7 @@
             />
             <button 
                 @click="sendMessage()"
-                class="place-self-end bg-gray-500 p-1 mt-1 rounded text-white">
+                class="place-self-end bg-gray-500 hover:bg-blue-700 p-1 mt-1 rounded text-white">
                 Send
             </button>
         </div>
@@ -27,7 +27,7 @@ export default{
     },
     methods: {
         sendMessage(){
-            if(this.sendMessage == ''){
+            if(this.message == ''){
                 return;
             }
              

@@ -9,11 +9,11 @@ class ChatMessage extends Model
 {
     use HasFactory;
 
-    public funstion room(){
+    public function room(){
         return $this->hasOne('App\Models\ChatRoom', 'id', 'chat_room_id');
     }
 
-    public funstion user(){
+    public function user(){
         return $this->hasOne('App\Models\User', 'id', 'user_id');
     }
 }

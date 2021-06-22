@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ChatRoom;
 use App\Models\ChatMessage;
-use Illuminat\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
+use App\Events\NewChatMessage;
 
 // Kontroler koji ce iz modela kupiti sobe i poruke iz baze.
 
@@ -16,7 +17,7 @@ class ChatController extends Controller
     }
 
     public function messages(Request $request, $roomId){
-        return chatMessage::where('chat_room_id', $roomId)
+        return ChatMessage::where('chat_room_id', $roomId)
             ->with('user')
             ->orderBy('created_at', 'DESC')
             ->get();
@@ -26,10 +27,12 @@ class ChatController extends Controller
         $newMessage                 = new ChatMessage;
         $newMessage->user_id        = Auth::id();
         $newMessage->chat_room_id   = $roomId;
-        $newMessage->messages       = $request->message;
+        $newMessage->message        = $request->message;
+        $newMessage->save();
+
+        broadcast(new NewChatMessage($newMessage))->toOthers();
 
         return $newMessage;
-
     }
 
 }
